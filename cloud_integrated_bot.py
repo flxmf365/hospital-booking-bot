@@ -46,15 +46,24 @@ class CloudIntegratedBot:
         
     def setup_driver(self):
         """클라우드 서버용 드라이버 설정"""
+        from selenium.webdriver.chrome.service import Service
+        from webdriver_manager.chrome import ChromeDriverManager
+        
         options = Options()
         options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--disable-extensions")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--disable-features=VizDisplayCompositor")
         options.add_argument("--window-size=1920,1080")
         options.add_argument("--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
-        return webdriver.Chrome(options=options)
+        options.add_argument("--remote-debugging-port=9222")
+        
+        # ChromeDriver 자동 관리
+        service = Service(ChromeDriverManager().install())
+        return webdriver.Chrome(service=service, options=options)
 
     def send_message(self, message):
         """텔레그램 메시지 전송"""
