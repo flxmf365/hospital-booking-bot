@@ -1,1 +1,1 @@
-worker: python cloud_integrated_bot.py
+worker: python simple_cloud_bot.py
